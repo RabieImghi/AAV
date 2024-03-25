@@ -18,7 +18,7 @@ phases:
       - composer require --dev phpunit/phpunit
   build:
     commands:
-      - ./vendor/bin/phpunit --filter VoiteursTest
+      - php artisan test
 artifacts:
   files:
     - '**/*'

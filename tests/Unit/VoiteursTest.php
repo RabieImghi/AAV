@@ -13,6 +13,8 @@ class VoiteursTest extends TestCase
     public function test_example(): void
     {
         $response = $this->get('http://34.231.177.79/api/voiteurs');
+        $voiteurs = Voiteur::all();
+        $response->assertJson($voiteurs->toArray());
         $response->assertStatus(200);
     }
 }
