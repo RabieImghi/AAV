@@ -5,8 +5,10 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class UserTest extends TestCase
 {
@@ -16,7 +18,7 @@ class UserTest extends TestCase
     {
         parent::setUp();
         Artisan::call('migrate:fresh');
-        \App\Models\Role::create([
+        Role::create([
             'id' => 1,
             'name' => 'Test Role',
         ]);
@@ -30,9 +32,22 @@ class UserTest extends TestCase
             "password" => "password",
             "role_id" => 1
         ];
-        $response = $this->json('POST', 'http://127.0.0.1:8000/api/createUser', $userData);
+        $response = $this->json('POST', 'api/createUser', $userData);
         $response->assertStatus(200);
     }
+
+    public function test_login_user(){
+        $user = \App\Models\User::factory()->create([
+            'password' => Hash::make($password = 'password'),
+        ]);
+        $userData = [
+            "email" => $user->email, 
+            "password" => $password, 
+        ];
+        $response = $this->json('POST', 'api/login', $userData);
+        $response->assertStatus(200);
+    }
+
     protected function tearDown(): void
     {
         Artisan::call('migrate:reset');

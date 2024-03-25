@@ -16,8 +16,7 @@ use App\Http\Controllers\VoiteurController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('/voiteurs', [VoiteurController::class, 'getAllVoiteurs']);
+
+Route::middleware('auth:sanctum')->get('/voiteurs', [VoiteurController::class, 'getAllVoiteurs']);
 Route::post('/createUser', [AuthController::class, 'registre']);
+Route::post('/login', [AuthController::class, 'login']);
