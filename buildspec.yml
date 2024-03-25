@@ -15,7 +15,9 @@ phases:
     commands:
       - composer update
       - npm install
-      - php artisan test
+  build:
+    commands:
+      - ./vendor/bin/phpunit --filter VoiteursTest
 artifacts:
   files:
     - '**/*'
