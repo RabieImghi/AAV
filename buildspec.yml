@@ -11,13 +11,12 @@ phases:
       - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
   pre_build:
     commands:
-      - composer install
       - composer update
       - npm install
-artifacts:
-  files:
-    - '**/*'
-  name: $(date +%Y-%m-%dT%H:%M:%S).zip
-proxy:
-  upload-artifacts: yes
-  logs: yes
+  artifacts:
+    files:
+      - '**/*'
+    name: $(date +%Y-%m-%dT%H:%M:%S).zip
+  proxy:
+    upload-artifacts: yes
+    logs: yes
