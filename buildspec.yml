@@ -18,6 +18,7 @@ phases:
       - composer require --dev phpunit/phpunit
   build:
     commands:
+      - php artisan migrate
       - php artisan test
 artifacts:
   files:
