@@ -16,6 +16,9 @@ phases:
       - composer update
       - npm install
       - composer require --dev phpunit/phpunit
+  build:
+    commands:
+      - php artisan test
 artifacts:
   files:
     - '**/*'
