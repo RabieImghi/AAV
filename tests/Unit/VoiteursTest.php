@@ -38,6 +38,37 @@ class VoiteursTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson([$voiteur->toArray()]);
     }
+    public function test_estimation(): void
+    {
+        $this->user = User::factory()->create();
+        $this->token = $this->user->createToken('API Token')->plainTextToken;
+        auth()->login( $this->user);
+        $voiteur = Voiteur::factory()->create([
+            "id"=> "1",
+            "marque" => "volkswagen",
+            "modele" => "golf 7",
+            "annee" => "2018",
+            "kilometrage" => "225000",
+            "prix" => "170000.00",
+            "puissance" => "8",
+            "motorisation" => "diesel",
+            "carburant" => "Automatique",
+        ]);
+        $dataSearch = [
+            "marque" => "volkswagen",
+            "modele" => "golf 7",
+            "annee" => "2018",
+            "kilometrage" => "225000",
+            "prix" => "170000.00",
+            "puissance" => "8",
+            "motorisation" => "diesel",
+            "carburant" => "Automatique",
+        ];
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->post('api/estimation', $dataSearch);
+        $response->assertStatus(200);
+    }
     protected function tearDown(): void
     {
         Artisan::call('migrate:reset');
