@@ -3,7 +3,7 @@ name: Laravel Deployment
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   deploy:
@@ -22,7 +22,7 @@ jobs:
         run: composer update --no-dev --prefer-dist --no-scripts --no-progress --no-suggest
 
       - name: Build assets
-        run: npm install && npm run production
+        run: npm install
 
       - name: Set up environment variables
         run: cp .env.example .env && php artisan key:generate
