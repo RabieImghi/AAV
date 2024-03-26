@@ -1,16 +1,37 @@
-on: push
-name: 🚀 Deploy website on push
+name: Laravel Deployment
+
+on:
+  push:
+    branches:
+      - dev
+
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: 62.72.37.105
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 'latest'
+
+      - name: Install dependencies
+        run: composer update --no-dev --prefer-dist --no-scripts --no-progress --no-suggest
+
+      - name: Build assets
+        run: npm install
+
+      - name: Set up environment variables
+        run: cp .env.example .env && php artisan key:generate
+
+      - name: Deploy to server
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          ftp-server: ${{ secrets.FTP_SERVER }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          remote-dir: /public_html
